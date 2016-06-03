@@ -6,12 +6,12 @@ const response = (req, res, next) => {
     partridge(req.params.text)
         .then(result => {
             res.send({
+                response_type: "in_channel",
                 text: result.gif
             });
         });
 }
 
-server.post('/', response);
 server.get('/', response);
 
 server.listen(process.env.PORT || 8080);
