@@ -2,8 +2,10 @@ const partridge = require('./partridge');
 const restify = require('restify');
 const server = restify.createServer();
 
+server.use(restify.queryParser());
+
 const response = (req, res, next) => {
-    partridge(req.params.text)
+    partridge(req.query.text)
         .then(result => {
             res.send({
                 response_type: "in_channel",

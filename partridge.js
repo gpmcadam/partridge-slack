@@ -3,8 +3,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 const Promise = require('bluebird');
 
-// 'cookie: __cfduid=d2693c614e20ecab6176f0607bf3649b91464167735; _ga=GA1.2.1360040696.1464167738; _gat=1'
-
 const domain = 'https://partridge.cloud';
 
 const parseSceneGifUrl = (href, thumb) => {
@@ -14,7 +12,6 @@ const parseSceneGifUrl = (href, thumb) => {
 };
 
 module.exports = str => {
-
     return new Promise((resolve, reject) => {
         const uri = `${domain}/inc/quote-finder.php`,
             method = 'POST',
@@ -34,9 +31,10 @@ module.exports = str => {
                 return;
             }
             const $ = cheerio.load(html);
-            const firstResult = $('.search-result').first();
-            const href = `${domain}/${firstResult.find('a').attr('href')}`;
-            const thumb = `${domain}/${firstResult.find('img').attr('src')}`;
+            const results = $('.search-result');
+            const result = results.eq(Math.floor(Math.random()*results.length));
+            const href = `${domain}/${result.find('a').attr('href')}`;
+            const thumb = `${domain}/${result.find('img').attr('src')}`;
             const gif = `${domain}/${parseSceneGifUrl(href, thumb)}`;
             resolve({ href, thumb, gif });
         });
